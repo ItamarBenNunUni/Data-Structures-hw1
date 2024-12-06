@@ -1,2 +1,2 @@
-# DS-hw1
+# Data-Structures-hw
 Practical assignment 1
