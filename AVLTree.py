@@ -88,7 +88,7 @@ class AVLTree(object):
 			if node.key == key_name:
 				return node, edges
 			else:
-				return search_helper(node.predecessor(node), key_name, edges + 1)
+				return search_helper(self.predecessor(node), key_name, edges + 1)
 		# Todo: change the implementation to use while loop
 		return search_helper(self.max, key, 1)
 
