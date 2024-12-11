@@ -58,17 +58,28 @@ class AVLTree(object):
 	and e is the number of edges on the path between the starting node and ending node+1.
 	"""
 	def search(self, key):
-		def search_helper(node, key_name, edges):
-			if node is None:
-				return None, edges # Todo: what should be the edges value if the node is None
-			if node.key == key_name:
-				return node, edges
-			elif node.key < key_name:
-				return search_helper(node.right, key_name, edges+1)
+		curr = self.root, edges = 1
+		while curr != None:
+			if curr.key == key:
+				return curr, edges
+			elif curr.key < key:
+				curr = curr.right
+				edges += 1
 			else:
-				return search_helper(node.left, key_name, edges+1)
-		# Todo: change the implementation to use while loop
-		return search_helper(self.root, key, 1)
+				curr = curr.left
+				edges += 1
+		return None, edges  # Todo: what should be the edges value if the node is None
+	
+		# def search_helper(node, key_name, edges):
+		# 	if node is None:
+		# 		return None, edges
+		# 	if node.key == key_name:
+		# 		return node, edges
+		# 	elif node.key < key_name:
+		# 		return search_helper(node.right, key_name, edges+1)
+		# 	else:
+		# 		return search_helper(node.left, key_name, edges+1)
+		# return search_helper(self.root, key, 1)
 
 
 	"""searches for a node in the dictionary corresponding to the key, starting at the max
@@ -80,17 +91,27 @@ class AVLTree(object):
 	and e is the number of edges on the path between the starting node and ending node+1.
 	"""
 	def finger_search(self, key):
-		def search_helper(node, key_name, edges):
-			if node is None:
-				return None, edges # Todo: what should be the edges value if the node is None
-			if node.key < key_name:
-				return None, edges
-			if node.key == key_name:
-				return node, edges
+		curr = self.max, edges = 1
+		while curr != None:
+			if curr.key == key:
+				return curr, edges
+			elif curr.key < key:
+				break
 			else:
-				return search_helper(self.predecessor(node), key_name, edges + 1)
-		# Todo: change the implementation to use while loop
-		return search_helper(self.max, key, 1)
+				curr = self.predecessor(curr)
+				edges += 1
+		return None, edges # Todo: what should be the edges value if the node is None
+
+		# def search_helper(node, key_name, edges):
+		# 	if node is None:
+		# 		return None, edges
+		# 	if node.key < key_name:
+		# 		return None, edges
+		# 	if node.key == key_name:
+		# 		return node, edges
+		# 	else:
+		# 		return search_helper(self.predecessor(node), key_name, edges + 1)
+		# return search_helper(self.max, key, 1)
 
 
 	# add func documentation for predecessor
