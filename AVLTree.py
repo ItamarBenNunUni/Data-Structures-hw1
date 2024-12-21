@@ -23,7 +23,6 @@ class AVLNode(object):
 		self.right = None
 		self.parent = None
 		self.height = -1
-		self.size = 1 # Todo: figure out what should be the initial value
 
 
 	"""returns whether self is not a virtual node 
@@ -32,7 +31,7 @@ class AVLNode(object):
 	@returns: False if self is a virtual node, True otherwise.
 	"""
 	def is_real_node(self):
-		return self.key is not None #Todo: not clear if the indication of virtual node is Node that is None or Node that has key as None
+		return self.key is not None
 
 """
 A class implementing an AVL tree.
@@ -59,19 +58,7 @@ class AVLTree(object):
 	"""
 	def search(self, key):
 		curr, edges = self.search_helper(key)
-		return None,edges if curr.key is None else curr, edges
-
-		# def search_helper(node, key_name, edges):
-		# 	if node is None:
-		# 		return None, edges
-		# 	if node.key == key_name:
-		# 		return node, edges
-		# 	elif node.key < key_name:
-		# 		return search_helper(node.right, key_name, edges+1)
-		# 	else:
-		# 		return search_helper(node.left, key_name, edges+1)
-		# return search_helper(self.root, key, 1)
-
+		return None,edges if curr.is_real_node() == False else curr, edges
 
 	"""searches for a node in the dictionary corresponding to the key (starting at the root)
 	@type key: int
@@ -82,7 +69,7 @@ class AVLTree(object):
 	"""
 	def search_helper(self, key):
 		curr = self.root, edges = 1
-		while curr.key is not None:
+		while curr.is_real_node():
 			if curr.key == key:
 				return curr, edges
 			elif curr.key < key:
@@ -91,7 +78,7 @@ class AVLTree(object):
 			else:
 				curr = curr.left
 				edges += 1
-		return curr, edges  # Todo: what should be the edges value if the node is None
+		return curr, edges
 
 	"""searches for a node in the dictionary corresponding to the key, starting at the max
         
@@ -102,8 +89,13 @@ class AVLTree(object):
 	and e is the number of edges on the path between the starting node and ending node+1.
 	"""
 	def finger_search(self, key):
+		curr, edges = self.finger_search_helper(key)
+		return None,edges if curr.is_real_node() == False else curr, edges
+
+	#TODO: add DOC
+	def finger_search_helper(self, key):
 		curr = self.max, edges = 1
-		while curr.key is not None:
+		while curr.is_real_node():
 			if curr.key == key:
 				return curr, edges
 			elif curr.key < key:
@@ -111,21 +103,8 @@ class AVLTree(object):
 			else:
 				curr = self.predecessor(curr)
 				edges += 1
-		return None, edges # Todo: what should be the edges value if the node is None
+		return curr, edges
 
-		# def search_helper(node, key_name, edges):
-		# 	if node is None:
-		# 		return None, edges
-		# 	if node.key < key_name:
-		# 		return None, edges
-		# 	if node.key == key_name:
-		# 		return node, edges
-		# 	else:
-		# 		return search_helper(self.predecessor(node), key_name, edges + 1)
-		# return search_helper(self.max, key, 1)
-
-
-	# add func documentation for predecessor
 	"""returns the predecessor of a given node
 	@type node: AVLNode
 	@param node: the node whose predecessor is to be found
@@ -133,16 +112,27 @@ class AVLTree(object):
 	@returns: the predecessor of the given node
 	"""
 	def predecessor(self, node):
-		if node.left is not None:
-			curr= node.left
-			while curr.right is not None:
+		if node.left.is_real_node():
+			curr = node.left
+			while curr.right.is_real_node():
 				curr = curr.right
 			return curr
 		curr = node
 		while curr.parent is not None and curr.parent.left == curr:
 			curr = curr.parent
-		return curr.parent
+		return node.left if curr.parent is None else curr.parent
 
+	#TODO: add DOC
+	def successor(self, node):
+		if node.right.is_real_node():
+			curr = node.right
+			while curr.left.is_real_node():
+				curr = curr.left
+			return curr
+		curr = node
+		while curr.parent is not None and curr.parent.right == curr:
+			curr = curr.parent
+		return node.right if curr.parent is None else curr.parent
 
 	"""inserts a new node into the dictionary with corresponding key and value (starting at the root)
 
@@ -157,48 +147,49 @@ class AVLTree(object):
 	and h is the number of PROMOTE cases during the AVL rebalancing
 	"""
 	def insert(self, key, val):
+		if self.root is None:
+			return self.insert_root(key, val)
+		#insertion de-facto + min/max updating
 		where_to_insert, edges = self.search_helper(key)
-		where_to_insert.key = key
-		where_to_insert.value = val
-		left_node= AVLNode(None, None)
-		left_node.parent = where_to_insert
-		right_node = AVLNode(None, None)
-		right_node.parent = where_to_insert
-		where_to_insert.left = left_node
-		where_to_insert.right = right_node
-		where_to_insert.height = 0
-		if self.max is None or key > self.max.key:
-			self.max = where_to_insert
-		if self.min is None or key < self.min.key:
-			self.min = where_to_insert
+		return self.insert_de_facto(where_to_insert, edges, key, val)
 
-		curr = where_to_insert.parent
-		while curr is not None:
-			bf = curr.right.height - curr.left.height
-			if bf == 0:
+	"""Rebalances the AVL tree starting from the given node upwards.
+
+	@type node: AVLNode
+	@param node: the node to start rebalancing from
+	@rtype: int
+	@returns: the number of PROMOTE cases during the AVL rebalancing
+	"""
+	def rebalance(self, node):
+		curr = node
+		h = 0 #number of promotes
+		while (curr is not None):
+			right_edge = curr.height - curr.right.height
+			left_edge = curr.height - curr.left.height
+			if (left_edge == 1 and right_edge == 1): #problem is fixed
 				break
-			elif bf == 1 or bf == -1:
+			elif ((left_edge == 1 and right_edge == 0) or (left_edge == 0 and right_edge == 1)): #case 1 - both symmetrical options: promote (slide 19)
 				curr.height += 1
-				curr = curr.parent
-			else: # you are not balanced, bf is +- 2, fix yourself and only then move up
-				if bf == -2:
-					right_child_bf = curr.right.right.height - curr.right.left.height
-					if right_child_bf == -1:
-						# rotate left
-					else: # right_child_bf == 1
-						# rotate right between two other childs and then left rotate
-				else: # bf == 2
-					left_child_bf = curr.left.right.height - curr.left.left.height
-					if left_child_bf == 1:
-						# rotate right
-					else:
-						# rotate left between two other childs and then right rotate
-				curr.height += 1 # Todo: check if needed
-				curr = curr.parent
-
-
-		#Todo: need to update the size of the nodes on the path from the root to the new node
-		return where_to_insert, edges, 0 #case A: no rotation needed, parent is balanced
+				h += 1
+			elif ((left_edge == 2 and right_edge == 0) or (left_edge == 0 and right_edge == 2)): #cases 2+3 (slide 22)
+				if (left_edge == 0): #cases 2+3 - symmetrical option as shown
+					child_left_edge = curr.left.height - curr.left.left.height
+					child_right_edge = curr.left.height - curr.left.right.height
+					if (child_left_edge == 1 and child_right_edge == 2): #case 2 - symmetrical option as shown: single rotation to the right (slide 26)
+						curr = self.rotate_right(curr)
+					elif (child_left_edge == 2 and child_right_edge == 1): #case 3 - symmetrical option as shown: double rotation to the left and then right (slide 27)
+						curr.left = self.rotate_left(curr.left)
+						curr = self.rotate_right(curr)
+				elif(right_edge == 0): #cases 2+3 - symmetrical option flipped from shown
+					child_left_edge = curr.right.height - curr.right.left.height
+					child_right_edge = curr.right.height - curr.right.right.height
+					if (child_left_edge == 2 and child_right_edge == 1): #case 2 - symmetrical option flipped from shown: single rotation to the left
+						curr = self.rotate_left(curr)
+					elif (child_left_edge == 1 and child_right_edge == 2): #case 3 - symmetrical option flipped from shown: double rotation to the right and then left
+						curr.right = self.rotate_right(curr.right)
+						curr = self.rotate_left(curr)			
+			curr = curr.parent 
+		return h
 
 
 	def rotate_left(self, node):
@@ -231,7 +222,11 @@ class AVLTree(object):
 	and h is the number of PROMOTE cases during the AVL rebalancing
 	"""
 	def finger_insert(self, key, val):
-		return None, -1, -1
+		if self.root is None:
+			return self.insert_root(key, val)
+		#insertion de-facto + min/max updating
+		where_to_insert, edges = self.finger_search_helper(key)
+		return self.insert_de_facto(where_to_insert, edges, key, val)
 
 
 	"""deletes node from the dictionary
@@ -240,8 +235,32 @@ class AVLTree(object):
 	@pre: node is a real pointer to a node in self
 	"""
 	def delete(self, node):
-		return
-
+		#regular BST deletion
+		if (node.height == 0 and node.parent is None) or (self.root is None):
+			self.root = None
+			self.min = None
+			self.max = None
+			return
+		if node.height == 0:#case 1: leaf
+			if node == node.parent.right:
+				node.parent.right = AVLNode(None, None)
+			if node == node.parent.left:
+				node.parent.left = AVLNode(None, None)
+		elif node.left.is_real_node() and node.right.is_real_node():#case 3: two children
+			succ = self.successor(node)
+			key, value = succ.key, succ.value
+			self.delete(succ)
+			node.key, node.value = key, value
+		else:#case 2: one child
+			if node.parent is not None:
+				if node == node.parent.left:
+					node.parent.left = node.left if node.left.real_node() else node.right
+				if node == node.parent.right:
+					node.parent.right = node.left if node.left.real_node() else node.right
+			else:#delete root
+				self.root = node.left if node.left.real_node() else node.right
+		#rebalance
+		
 
 	"""joins self with item and another AVLTree
 
@@ -255,7 +274,49 @@ class AVLTree(object):
 	or the opposite way
 	"""
 	def join(self, tree2, key, val):
-		return
+		#figure out bigger higher
+		bigger = self.root if self.root.key > key else tree2.root
+		smaller = self.root if self.root.key < key else tree2.root
+		higher = self.root if self.root.height > tree2.root.height else tree2.root
+		lower = self.root if self.root.height < tree2.root.height else tree2.root
+		k = lower.height
+		#find k-most height
+		new_node = AVLNode(key, val)
+		curr = higher
+		if higher == bigger:
+			while curr.height > k:
+				curr = curr.left
+			new_node.right = curr
+			new_node.left = smaller
+		else:#higher = smaller
+			while curr.height > k:
+				curr = curr.right
+			new_node.right = bigger
+			new_node.left = curr
+		new_node.parent = curr.parent
+		#rebalance
+		h = self.rebalance(new_node)
+		#root updating
+		curr = new_node.parent
+		while curr.parent is not None:
+			curr = curr.parent
+		self.root = curr
+		# min-max assign
+		self.set_min()
+		self.set_max()
+
+
+	def set_min(self):
+		curr = self.root
+		while curr.left.is_real_node():
+			curr = curr.left
+		self.min = curr
+	
+	def set_max(self):
+		curr = self.root
+		while curr.right.is_real_node():
+			curr = curr.right
+		self.max = curr
 
 
 	"""splits the dictionary at a given node
@@ -269,7 +330,27 @@ class AVLTree(object):
 	dictionary larger than node.key.
 	"""
 	def split(self, node):
-		return None, None
+		smaller = AVLTree()
+		bigger = AVLTree()
+		smaller.root = node.left
+		smaller.root.parent = None
+		bigger.root = node.right
+		bigger.root.parent = None
+		#start going up
+		curr = node
+		while curr.parent is not None:
+			if curr == curr.parent.right:
+				left_son_of_parent = AVLTree()
+				left_son_of_parent.root = curr.parent.left
+				left_son_of_parent.root.parent = None
+				smaller.join(left_son_of_parent, curr.parent.key, curr.parent.value)
+			if curr == curr.parent.left:
+				right_son_of_parent = AVLTree()
+				right_son_of_parent.root = curr.parent.right
+				right_son_of_parent.root.parent = None
+				bigger.join(right_son_of_parent, curr.parent.key, curr.parent.value)
+		#return
+		return smaller, bigger
 
 
 	"""returns an array representing dictionary 
@@ -311,3 +392,36 @@ class AVLTree(object):
 	"""
 	def get_root(self):
 		return self.root
+
+	#TODO: add DOC
+	def insert_root(self, key, val):
+		self.root = AVLNode(key, val)
+		self.root.height = 0
+		self.root.left = AVLNode(None, None)
+		self.root.right = AVLNode(None, None)
+		return self.root, 1, 0
+
+	#TODO: add DOC
+	def insert_de_facto(self, where_to_insert, edges, key, val):
+		where_to_insert.key = key
+		where_to_insert.value = val
+		left_node= AVLNode(None, None)
+		left_node.parent = where_to_insert
+		right_node = AVLNode(None, None)
+		right_node.parent = where_to_insert
+		where_to_insert.left = left_node
+		where_to_insert.right = right_node
+		where_to_insert.height = 0
+		if self.max is None or key > self.max.key:
+			self.max = where_to_insert
+		if self.min is None or key < self.min.key:
+			self.min = where_to_insert
+		#promoting and balancing
+		h = self.rebalance(where_to_insert.parent)
+		#size updating
+		curr = where_to_insert.parent
+		while (curr is not None):
+			curr.size += 1
+			curr = curr.parent
+		#return 
+		return where_to_insert, edges, h
