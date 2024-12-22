@@ -92,7 +92,13 @@ class AVLTree(object):
 		curr, edges = self.finger_search_helper(key)
 		return None,edges if curr.is_real_node() == False else curr, edges
 
-	#TODO: add DOC
+	"""searches for a node in the dictionary corresponding to the key, starting at the max
+	@type key: int
+	@param key: a key to be searched
+	@rtype: (AVLNode,int)
+	@returns: a tuple (x,e) where x is the node corresponding to key (or the virtual Node if not found),
+	and e is the number of edges on the path between the starting node and ending node+1.
+	"""
 	def finger_search_helper(self, key):
 		curr = self.max, edges = 1
 		while curr.is_real_node():
@@ -122,7 +128,13 @@ class AVLTree(object):
 			curr = curr.parent
 		return node.left if curr.parent is None else curr.parent
 
-	#TODO: add DOC
+	"""returns the successor of a given node
+
+	@type node: AVLNode
+	@param node: the node whose successor is to be found
+	@rtype: AVLNode
+	@returns: the successor of the given node
+	"""
 	def successor(self, node):
 		if node.right.is_real_node():
 			curr = node.right
@@ -305,13 +317,14 @@ class AVLTree(object):
 		self.set_min()
 		self.set_max()
 
-
+	"""Sets the minimum node in the AVL tree."""
 	def set_min(self):
 		curr = self.root
 		while curr.left.is_real_node():
 			curr = curr.left
 		self.min = curr
 	
+	"""Sets the maximum node in the AVL tree."""
 	def set_max(self):
 		curr = self.root
 		while curr.right.is_real_node():
@@ -382,7 +395,12 @@ class AVLTree(object):
 	@returns: the number of items in dictionary 
 	"""
 	def size(self):
-		return 0 if self.root is None else self.root.size
+		size = 0
+		def size_rec(node):
+			if node.is_real_node() == False:
+				return 0
+			return size_rec(node.left) + size_rec(node.right) + 1
+		return size_rec(self.root)
 
 
 	"""returns the root of the tree representing the dictionary
@@ -393,7 +411,17 @@ class AVLTree(object):
 	def get_root(self):
 		return self.root
 
-	#TODO: add DOC
+	"""Inserts a new root node into the AVL tree with the given key and value.
+
+	@type key: int
+	@param key: key of the new root node
+	@type val: string
+	@param val: value of the new root node
+	@rtype: (AVLNode, int, int)
+	@returns: a 3-tuple (x, e, h) where x is the new root node,
+	e is the number of edges (always 1 for root insertion),
+	and h is the number of PROMOTE cases during the AVL rebalancing (always 0 for root insertion)
+	"""
 	def insert_root(self, key, val):
 		self.root = AVLNode(key, val)
 		self.root.height = 0
@@ -401,7 +429,21 @@ class AVLTree(object):
 		self.root.right = AVLNode(None, None)
 		return self.root, 1, 0
 
-	#TODO: add DOC
+	"""Inserts a new node into the AVL tree at the specified location.
+
+	@type where_to_insert: AVLNode
+	@param where_to_insert: the node where the new node should be inserted
+	@type edges: int
+	@param edges: the number of edges on the path to the insertion point
+	@type key: int
+	@param key: the key of the new node
+	@type val: string
+	@param val: the value of the new node
+	@rtype: (AVLNode, int, int)
+	@returns: a 3-tuple (x, e, h) where x is the new node,
+	e is the number of edges on the path to the new node,
+	and h is the number of PROMOTE cases during the AVL rebalancing
+	"""
 	def insert_de_facto(self, where_to_insert, edges, key, val):
 		where_to_insert.key = key
 		where_to_insert.value = val
