@@ -212,12 +212,31 @@ class AVLTree(object):
 	@returns: the new root of the subtree after the rotation
 	"""
 	def rotate_left(self, node):
-		child = node.right
-		node.right = child.left
-		child.left = node
-		child.height = 1 + max(child.left.height, child.right.height)
-		node.height = 1 + max(node.left.height, node.right.height)
-		return child
+		#declare variables
+		x = node
+		a = x.left
+		y = x.right
+		b = y.left
+		c = y.right
+		x_parent = x.parent
+		#re-assigning
+		x.right = b
+		b.parent = x
+		y.left = x
+		x.parent = y
+		y.parent = x_parent
+		#height updating
+		x.height = 1 + max(a.height, b.height)
+		y.height = 1 + max(x.height, c.height)
+		#root edge case
+		if x_parent is None:
+			self.root = y
+		else:
+			if x == x_parent.right:
+				x_parent.right = y
+			if x == x_parent.left:
+				x_parent.left = y
+		return y
 
 	"""Performs a right rotation on the given node.
 
@@ -227,12 +246,31 @@ class AVLTree(object):
 	@returns: the new root of the subtree after the rotation
 	"""
 	def rotate_right(self, node):
-		child = node.left
-		node.left = child.right
-		child.right = node
-		child.height = 1 + max(child.left.height, child.right.height)
-		node.height = 1 + max(node.left.height, node.right.height)
-		return child
+		#declare variables
+		y = node
+		c = y.right
+		x = y.left
+		a = x.left
+		b = x.right
+		y_parent = y.parent
+		#re-assigning
+		y.left = b
+		b.parent = y
+		x.right = y
+		y.parent = x
+		x.parent = y_parent
+		#height updating
+		y.height = 1 + max(b.height, c.height)
+		x.height = 1 + max(a.height, y.height)
+		#root edge case
+		if y_parent is None:
+			self.root = x
+		else:
+			if y == y_parent.right:
+				y_parent.right = x
+			if y == y_parent.left:
+				y_parent.left = x
+		return x
 
 	"""inserts a new node into the dictionary with corresponding key and value, starting at the max
 
