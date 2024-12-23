@@ -473,10 +473,12 @@ class AVLTree(object):
 		self.root.height = 0
 		self.max = self.root
 		self.min = self.root
-		self.min = self.root
-		self.max = self.root
-		self.root.left = AVLNode(None, None)
-		self.root.right = AVLNode(None, None)
+		virtual_left = AVLNode(None, None)
+		virtual_left.parent = self.root
+		virtual_right = AVLNode(None, None)
+		virtual_right.parent = self.root
+		self.root.left = virtual_left
+		self.root.right = virtual_right
 		return self.root, 1, 0
 
 	"""Inserts a new node into the AVL tree at the specified location.
@@ -497,7 +499,7 @@ class AVLTree(object):
 	def insert_de_facto(self, where_to_insert, edges, key, val):
 		where_to_insert.key = key
 		where_to_insert.value = val
-		left_node= AVLNode(None, None)
+		left_node = AVLNode(None, None)
 		left_node.parent = where_to_insert
 		right_node = AVLNode(None, None)
 		right_node.parent = where_to_insert
