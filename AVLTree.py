@@ -203,7 +203,13 @@ class AVLTree(object):
 			curr = curr.parent 
 		return h
 
+	"""Performs a left rotation on the given node.
 
+	@type node: AVLNode
+	@param node: the node to perform the left rotation on
+	@rtype: AVLNode
+	@returns: the new root of the subtree after the rotation
+	"""
 	def rotate_left(self, node):
 		child = node.right
 		node.right = child.left
@@ -212,7 +218,13 @@ class AVLTree(object):
 		node.height = 1 + max(node.left.height, node.right.height)
 		return child
 
+	"""Performs a right rotation on the given node.
 
+	@type node: AVLNode
+	@param node: the node to perform the right rotation on
+	@rtype: AVLNode
+	@returns: the new root of the subtree after the rotation
+	"""
 	def rotate_right(self, node):
 		child = node.left
 		node.left = child.right
@@ -426,6 +438,8 @@ class AVLTree(object):
 	def insert_root(self, key, val):
 		self.root = AVLNode(key, val)
 		self.root.height = 0
+		self.min = self.root
+		self.max = self.root
 		self.root.left = AVLNode(None, None)
 		self.root.right = AVLNode(None, None)
 		return self.root, 1, 0
