@@ -421,7 +421,7 @@ class AVLTree(object):
 	def avl_to_array(self):
 		in_order = []
 		def in_order_helper(node):
-			if node is not None:
+			if node.is_real_node():
 				in_order_helper(node.left)
 				in_order.append((node.key, node.value))
 				in_order_helper(node.right)
