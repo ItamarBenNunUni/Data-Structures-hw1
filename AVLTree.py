@@ -378,7 +378,8 @@ class AVLTree(object):
 				in_order_helper(node.left)
 				in_order.append((node.key, node.value))
 				in_order_helper(node.right)
-		return in_order_helper(self.root)
+		in_order_helper(self.root)
+		return in_order
 
 
 	"""returns the node with the maximal key in the dictionary
