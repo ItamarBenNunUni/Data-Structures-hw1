@@ -47,7 +47,6 @@ class AVLTree(object):
 		self.min = None
 		self.max = None
 
-
 	"""searches for a node in the dictionary corresponding to the key (starting at the root)
         
 	@type key: int
@@ -68,7 +67,8 @@ class AVLTree(object):
 	and e is the number of edges on the path between the starting node and ending node+1.
 	"""
 	def search_helper(self, key):
-		curr = self.root, edges = 1
+		curr = self.root
+		edges = 1
 		while curr.is_real_node():
 			if curr.key == key:
 				return curr, edges
@@ -100,7 +100,8 @@ class AVLTree(object):
 	and e is the number of edges on the path between the starting node and ending node+1.
 	"""
 	def finger_search_helper(self, key):
-		curr = self.max, edges = 1
+		curr = self.max
+		edges = 1
 		while curr.is_real_node():
 			if curr.key == key:
 				return curr, edges
@@ -252,7 +253,6 @@ class AVLTree(object):
 		where_to_insert, edges = self.finger_search_helper(key)
 		return self.insert_de_facto(where_to_insert, edges, key, val)
 
-
 	"""deletes node from the dictionary
 
 	@type node: AVLNode
@@ -285,7 +285,6 @@ class AVLTree(object):
 				self.root = node.left if node.left.real_node() else node.right
 		#rebalance
 		
-
 	"""joins self with item and another AVLTree
 
 	@type tree2: AVLTree 
@@ -343,7 +342,6 @@ class AVLTree(object):
 			curr = curr.right
 		self.max = curr
 
-
 	"""splits the dictionary at a given node
 
 	@type node: AVLNode
@@ -377,7 +375,6 @@ class AVLTree(object):
 		#return
 		return smaller, bigger
 
-
 	"""returns an array representing dictionary 
 
 	@rtype: list
@@ -392,7 +389,6 @@ class AVLTree(object):
 				in_order_helper(node.right)
 		in_order_helper(self.root)
 		return in_order
-
 
 	"""returns the node with the maximal key in the dictionary
 
@@ -414,7 +410,6 @@ class AVLTree(object):
 				return 0
 			return size_rec(node.left) + size_rec(node.right) + 1
 		return size_rec(self.root)
-
 
 	"""returns the root of the tree representing the dictionary
 
@@ -438,6 +433,8 @@ class AVLTree(object):
 	def insert_root(self, key, val):
 		self.root = AVLNode(key, val)
 		self.root.height = 0
+		self.max = self.root
+		self.min = self.root
 		self.min = self.root
 		self.max = self.root
 		self.root.left = AVLNode(None, None)
@@ -475,10 +472,5 @@ class AVLTree(object):
 			self.min = where_to_insert
 		#promoting and balancing
 		h = self.rebalance(where_to_insert.parent)
-		#size updating
-		curr = where_to_insert.parent
-		while (curr is not None):
-			curr.size += 1
-			curr = curr.parent
 		#return 
 		return where_to_insert, edges, h
