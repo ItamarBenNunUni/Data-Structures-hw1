@@ -57,7 +57,10 @@ class AVLTree(object):
 	"""
 	def search(self, key):
 		curr, edges = self.search_helper(key)
-		return None,edges if curr.is_real_node() == False else curr, edges
+		if curr.is_real_node() == False:
+			return None, edges
+		else:
+			return curr, edges
 
 	"""searches for a node in the dictionary corresponding to the key (starting at the root)
 	@type key: int
@@ -90,7 +93,10 @@ class AVLTree(object):
 	"""
 	def finger_search(self, key):
 		curr, edges = self.finger_search_helper(key)
-		return None,edges if curr.is_real_node() == False else curr, edges
+		if curr.is_real_node() == False:
+			return None, edges
+		else:
+			return curr, edges
 
 	"""searches for a node in the dictionary corresponding to the key, starting at the max
 	@type key: int
@@ -316,11 +322,11 @@ class AVLTree(object):
 		else:#case 2: one child
 			if node.parent is not None:
 				if node == node.parent.left:
-					node.parent.left = node.left if node.left.real_node() else node.right
+					node.parent.left = node.left if node.left.is_real_node() else node.right
 				if node == node.parent.right:
-					node.parent.right = node.left if node.left.real_node() else node.right
+					node.parent.right = node.left if node.left.is_real_node() else node.right
 			else:#delete root
-				self.root = node.left if node.left.real_node() else node.right
+				self.root = node.left if node.left.is_real_node() else node.right
 		#rebalance
 		
 	"""joins self with item and another AVLTree
@@ -343,6 +349,7 @@ class AVLTree(object):
 		k = lower.height
 		#find k-most height
 		new_node = AVLNode(key, val)
+		new_node.height = k + 1
 		curr = higher
 		if higher == bigger:
 			while curr.height > k:
@@ -358,7 +365,7 @@ class AVLTree(object):
 		#rebalance
 		h = self.rebalance(new_node)
 		#root updating
-		curr = new_node.parent
+		curr = new_node
 		while curr.parent is not None:
 			curr = curr.parent
 		self.root = curr
@@ -411,6 +418,10 @@ class AVLTree(object):
 				right_son_of_parent.root.parent = None
 				bigger.join(right_son_of_parent, curr.parent.key, curr.parent.value)
 		#return
+		smaller.set_min()
+		smaller.set_max()
+		bigger.set_min()
+		bigger.set_max()
 		return smaller, bigger
 
 	"""returns an array representing dictionary 
@@ -442,7 +453,6 @@ class AVLTree(object):
 	@returns: the number of items in dictionary 
 	"""
 	def size(self):
-		size = 0
 		def size_rec(node):
 			if node.is_real_node() == False:
 				return 0
