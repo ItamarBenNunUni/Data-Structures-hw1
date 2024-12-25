@@ -112,7 +112,7 @@ class AVLTree(object):
 			if curr.key == key:
 				return curr, edges
 			elif curr.key < key:
-				break
+				curr = curr.right
 			else:
 				curr = self.predecessor(curr)
 				edges += 1
@@ -354,14 +354,23 @@ class AVLTree(object):
 		if higher == bigger:
 			while curr.height > k:
 				curr = curr.left
+			if curr.parent is not None:
+				curr.parent.left = new_node
 			new_node.right = curr
 			new_node.left = smaller
+			new_node.parent = curr.parent
+			curr.parent = new_node
+			smaller.parent = new_node
 		else:#higher = smaller
 			while curr.height > k:
 				curr = curr.right
+			if curr.parent is not None:
+				curr.parent.right = new_node
 			new_node.right = bigger
 			new_node.left = curr
-		new_node.parent = curr.parent
+			new_node.parent = curr.parent
+			curr.parent = new_node
+			bigger.parent = new_node
 		#rebalance
 		h = self.rebalance(new_node)
 		#root updating
@@ -417,6 +426,7 @@ class AVLTree(object):
 				right_son_of_parent.root = curr.parent.right
 				right_son_of_parent.root.parent = None
 				bigger.join(right_son_of_parent, curr.parent.key, curr.parent.value)
+			curr = curr.parent
 		#return
 		smaller.set_min()
 		smaller.set_max()
