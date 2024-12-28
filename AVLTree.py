@@ -56,6 +56,8 @@ class AVLTree(object):
 	and e is the number of edges on the path between the starting node and ending node+1.
 	"""
 	def search(self, key):
+		if (key is None):
+			return None, 1
 		curr, edges = self.search_helper(key)
 		if curr.is_real_node() == False:
 			return None, edges
@@ -92,6 +94,8 @@ class AVLTree(object):
 	and e is the number of edges on the path between the starting node and ending node+1.
 	"""
 	def finger_search(self, key):
+		if (key is None):
+			return None, 1
 		curr, edges = self.finger_search_helper(key)
 		if curr.is_real_node() == False:
 			return None, edges
@@ -166,6 +170,8 @@ class AVLTree(object):
 	and h is the number of PROMOTE cases during the AVL rebalancing
 	"""
 	def insert(self, key, val):
+		if (key is None):
+			return
 		if self.root is None:
 			return self.insert_root(key, val)
 		#insertion de-facto + min/max updating
@@ -291,6 +297,8 @@ class AVLTree(object):
 	and h is the number of PROMOTE cases during the AVL rebalancing
 	"""
 	def finger_insert(self, key, val):
+		if (key is None):
+			return
 		if self.root is None:
 			return self.insert_root(key, val)
 		#insertion de-facto + min/max updating
@@ -303,6 +311,8 @@ class AVLTree(object):
 	@pre: node is a real pointer to a node in self
 	"""
 	def delete(self, node):
+		if (node is None):
+			return
 		#regular BST deletion
 		if (node.height == 0 and node.parent is None) or (self.root is None):
 			self.root = None
@@ -310,10 +320,12 @@ class AVLTree(object):
 			self.max = None
 			return
 		if node.height == 0:#case 1: leaf
+			virtual_node = AVLNode(None, None)
+			virtual_node.parent = node.parent
 			if node == node.parent.right:
-				node.parent.right = AVLNode(None, None)
+				node.parent.right = virtual_node
 			if node == node.parent.left:
-				node.parent.left = AVLNode(None, None)
+				node.parent.left = virtual_node
 		elif node.left.is_real_node() and node.right.is_real_node():#case 3: two children
 			succ = self.successor(node)
 			key, value = succ.key, succ.value
@@ -322,13 +334,59 @@ class AVLTree(object):
 		else:#case 2: one child
 			if node.parent is not None:
 				if node == node.parent.left:
-					node.parent.left = node.left if node.left.is_real_node() else node.right
+					if node.left.is_real_node():
+						node.parent.left = node.left
+						node.left.parent = node.parent
+					else:
+						node.parent.left = node.right
+						node.right.parent = node.parent
 				if node == node.parent.right:
-					node.parent.right = node.left if node.left.is_real_node() else node.right
+					if node.left.is_real_node():
+						node.parent.right = node.left
+						node.left.parent = node.parent
+					else:
+						node.parent.right = node.right
+						node.right.parent = node.parent
 			else:#delete root
-				self.root = node.left if node.left.is_real_node() else node.right
+				if node.left.is_real_node():
+					self.root = node.left
+					node.left.parent = None
+				else:
+					self.root = node.right
+					node.right.parent = None
 		#rebalance
-		
+		curr = node.parent
+		while (curr is not None):
+			right_edge = curr.height - curr.right.height
+			left_edge = curr.height - curr.left.height
+			bf = abs(right_edge - left_edge)
+			if bf <= 1 and right_edge != 2 and left_edge != 2: #problem is fixed
+				break
+			if (right_edge == 2 and left_edge == 2): #case 1
+				curr.height -= 1
+			elif (left_edge == 3 and right_edge == 1): #cases 2+3+4
+				child = curr.right
+				child_left_edge = child.height - child.left.height
+				child_right_edge = child.height - child.right.height
+				if (child_left_edge == 1 and child_right_edge == 1) or (child_left_edge == 2 and child_right_edge == 1):
+					curr = self.rotate_left(curr)
+				elif (child_left_edge == 1 and child_right_edge == 2):
+					curr.right = self.rotate_right(curr.right)
+					curr = self.rotate_left(curr)
+			elif (left_edge == 1 and right_edge == 3): #cases 2+3+4 - flipped
+				child = curr.left
+				child_left_edge = child.height - child.left.height
+				child_right_edge = child.height - child.right.height
+				if (child_left_edge == 1 and child_right_edge == 1) or (child_left_edge == 1 and child_right_edge == 2):
+					curr = self.rotate_right(curr)
+				elif (child_left_edge == 2 and child_right_edge == 1):
+					curr.left = self.rotate_left(curr.left)
+					curr = self.rotate_right(curr)
+			curr = curr.parent
+		#update min/max
+		self.min = self.set_min()
+		self.max = self.set_max()
+					
 	"""joins self with item and another AVLTree
 
 	@type tree2: AVLTree 
@@ -341,6 +399,10 @@ class AVLTree(object):
 	or the opposite way
 	"""
 	def join(self, tree2, key, val):
+		if (tree2 is None):
+			self.insert(key, val)
+		if (key is None):
+			return
 		#figure out bigger higher
 		bigger = self.root if self.root.key > key else tree2.root
 		smaller = self.root if self.root.key < key else tree2.root
@@ -407,6 +469,8 @@ class AVLTree(object):
 	dictionary larger than node.key.
 	"""
 	def split(self, node):
+		if (node is None):
+			return
 		smaller = AVLTree()
 		bigger = AVLTree()
 		smaller.root = node.left
@@ -534,3 +598,5 @@ class AVLTree(object):
 		h = self.rebalance(where_to_insert.parent)
 		#return 
 		return where_to_insert, edges, h
+
+
