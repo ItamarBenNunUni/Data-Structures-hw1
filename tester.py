@@ -51,7 +51,6 @@ def build_AVL(arr, q):
     for elem in arr:
         if q == 3:
             promotes += tree.insert(elem, "")[1]
-            print(promotes)
         else:
             promotes += tree.insert(elem, "")[2]
     return promotes
@@ -67,14 +66,15 @@ def do_20(arr, x, q):
 
 def do_question(q, arrays):
     x = 10 if q != 2 else 5
+    what = ["Cost of balancing", "Number of switches", "Cost of searching"] 
     for i in range(x):
         print("i = " + str(i + 1) + ", n = " + str(len(arrays[i])) + ":")
-        print("Cost in ordered array: " + str(f1(arrays[i], q)))
-        print("Cost in reversed array: " + str(f2(arrays[i], q)))
-        print("Cost in random array: " + str(do_20(arrays[i], 3, q)))
-        print("Cost in random switched adjacent array: " + str(do_20(arrays[i], 4, q)))
+        print(what[q - 1] + " in ordered array: " + str(f1(arrays[i], q)))
+        print(what[q - 1] + " in reversed array: " + str(f2(arrays[i], q)))
+        print(what[q - 1] + " in random array: " + str(do_20(arrays[i], 3, q)))
+        print(what[q - 1] + " in random switched adjacent array: " + str(do_20(arrays[i], 4, q)))
 
-if __name__ == "__main__":
+def test():
     arrays = [[] for i in range(10)]
     for i in range(10):
         n = 111 * (2 ** (i + 1))
@@ -83,3 +83,6 @@ if __name__ == "__main__":
     for i in range(3):
         print("Question " + str(i + 1))
         do_question(i + 1, arrays)
+
+if __name__ == "__main__":
+    test()

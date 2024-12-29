@@ -55,7 +55,7 @@ class AVLTree(object):
 	@returns: a tuple (x,e) where x is the node corresponding to key (or None if not found),
 	and e is the number of edges on the path between the starting node and ending node+1.
 	"""
-	def search(self, key):
+	def search(self, key): # Time complexity: O(logn)
 		if (key is None):
 			return None, 1
 		curr, edges = self.search_helper(key)
@@ -71,7 +71,7 @@ class AVLTree(object):
 	@returns: a tuple (x,e) where x is the node corresponding to key (or the virtual Node if not found),
 	and e is the number of edges on the path between the starting node and ending node+1.
 	"""
-	def search_helper(self, key):
+	def search_helper(self, key): # Time complexity: O(logn)
 		curr = self.root
 		edges = 1
 		while curr.is_real_node():
@@ -93,7 +93,7 @@ class AVLTree(object):
 	@returns: a tuple (x,e) where x is the node corresponding to key (or None if not found),
 	and e is the number of edges on the path between the starting node and ending node+1.
 	"""
-	def finger_search(self, key):
+	def finger_search(self, key): # Time complexity: O(logn)
 		if (key is None):
 			return None, 1
 		curr, edges = self.finger_search_helper(key)
@@ -109,7 +109,7 @@ class AVLTree(object):
 	@returns: a tuple (x,e) where x is the node corresponding to key (or the virtual Node if not found),
 	and e is the number of edges on the path between the starting node and ending node+1.
 	"""
-	def finger_search_helper(self, key):
+	def finger_search_helper(self, key): # Time complexity: O(logn)
 		curr = self.max
 		edges = 1
 		while curr.is_real_node():
@@ -128,7 +128,7 @@ class AVLTree(object):
 	@rtype: AVLNode
 	@returns: the predecessor of the given node
 	"""
-	def predecessor(self, node):
+	def predecessor(self, node): # Time complexity: O(logn)
 		if node.left.is_real_node():
 			curr = node.left
 			while curr.right.is_real_node():
@@ -146,7 +146,7 @@ class AVLTree(object):
 	@rtype: AVLNode
 	@returns: the successor of the given node
 	"""
-	def successor(self, node):
+	def successor(self, node): # Time complexity: O(logn)
 		if node.right.is_real_node():
 			curr = node.right
 			while curr.left.is_real_node():
@@ -169,7 +169,7 @@ class AVLTree(object):
 	e is the number of edges on the path between the starting node and new node before rebalancing,
 	and h is the number of PROMOTE cases during the AVL rebalancing
 	"""
-	def insert(self, key, val):
+	def insert(self, key, val): # Time complexity: O(logn)
 		if (key is None):
 			return
 		if self.root is None:
@@ -185,7 +185,7 @@ class AVLTree(object):
 	@rtype: int
 	@returns: the number of PROMOTE cases during the AVL rebalancing
 	"""
-	def rebalance(self, node):
+	def rebalance(self, node): # Time complexity: O(logn)
 		curr = node
 		h = 0 #number of promotes
 		while (curr is not None):
@@ -296,7 +296,7 @@ class AVLTree(object):
 	e is the number of edges on the path between the starting node and new node before rebalancing,
 	and h is the number of PROMOTE cases during the AVL rebalancing
 	"""
-	def finger_insert(self, key, val):
+	def finger_insert(self, key, val): # Time complexity: O(logn)
 		if (key is None):
 			return
 		if self.root is None:
@@ -310,7 +310,7 @@ class AVLTree(object):
 	@type node: AVLNode
 	@pre: node is a real pointer to a node in self
 	"""
-	def delete(self, node):
+	def delete(self, node): # Time complexity: O(logn)
 		if (node is None):
 			return
 		#regular BST deletion
@@ -398,7 +398,7 @@ class AVLTree(object):
 	@pre: all keys in self are smaller than key and all keys in tree2 are larger than key,
 	or the opposite way
 	"""
-	def join(self, tree2, key, val):
+	def join(self, tree2, key, val): # Time complexity: O(logn)
 		if (tree2 is None):
 			self.insert(key, val)
 		if (key is None):
@@ -445,14 +445,14 @@ class AVLTree(object):
 		self.set_max()
 
 	"""Sets the minimum node in the AVL tree."""
-	def set_min(self):
+	def set_min(self): # Time complexity: O(logn)
 		curr = self.root
 		while curr.left.is_real_node():
 			curr = curr.left
 		self.min = curr
 	
 	"""Sets the maximum node in the AVL tree."""
-	def set_max(self):
+	def set_max(self): # Time complexity: O(logn)
 		curr = self.root
 		while curr.right.is_real_node():
 			curr = curr.right
@@ -468,7 +468,7 @@ class AVLTree(object):
 	dictionary smaller than node.key, and right is an AVLTree representing the keys in the 
 	dictionary larger than node.key.
 	"""
-	def split(self, node):
+	def split(self, node): # Time complexity: O(logn)
 		if (node is None):
 			return
 		smaller = AVLTree()
@@ -503,7 +503,7 @@ class AVLTree(object):
 	@rtype: list
 	@returns: a sorted list according to key of touples (key, value) representing the data structure
 	"""
-	def avl_to_array(self):
+	def avl_to_array(self): # Time complexity: O(n)
 		in_order = []
 		def in_order_helper(node):
 			if node.is_real_node():
@@ -526,7 +526,7 @@ class AVLTree(object):
 	@rtype: int
 	@returns: the number of items in dictionary 
 	"""
-	def size(self):
+	def size(self): # Time complexity: O(n)
 		def size_rec(node):
 			if node.is_real_node() == False:
 				return 0
@@ -580,7 +580,7 @@ class AVLTree(object):
 	e is the number of edges on the path to the new node,
 	and h is the number of PROMOTE cases during the AVL rebalancing
 	"""
-	def insert_de_facto(self, where_to_insert, edges, key, val):
+	def insert_de_facto(self, where_to_insert, edges, key, val): # Time complexity: O(logn)
 		where_to_insert.key = key
 		where_to_insert.value = val
 		left_node = AVLNode(None, None)
@@ -598,5 +598,3 @@ class AVLTree(object):
 		h = self.rebalance(where_to_insert.parent)
 		#return 
 		return where_to_insert, edges, h
-
-
