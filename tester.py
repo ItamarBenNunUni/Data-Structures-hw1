@@ -68,10 +68,9 @@ def do_question(q, arrays):
     what = ["Cost of balancing", "Number of switches", "Cost of searching"]
     for i in range(x):
         print("i = " + str(i + 1) + ", n = " + str(len(arrays[i])) + ":")
-        print(what[q - 1] + " in ordered array: " + str(f1(arrays[i], q)))
-        print(what[q - 1] + " in reversed array: " + str(f2(arrays[i], q)))
-        print(what[q - 1] + " in random array: " + str(do_20(arrays[i], 3, q)))
-        print(what[q - 1] + " in random switched adjacent array: " + str(do_20(arrays[i], 4, q)))
+        print(what[q - 1] + " in Ordered/Reversed/Random/Switch Adjacent: ", end=" ")
+        orr, rev, rnd, adj = str(f1(arrays[i], q)), str(f2(arrays[i], q)), str(do_20(arrays[i], 3, q)), str(do_20(arrays[i], 4, q))
+        print(orr + " " + rev + " " + rnd + " " + adj)
 
 def test():
     arrays = [[] for i in range(10)]
@@ -83,6 +82,28 @@ def test():
         print("Question " + str(i + 1))
         do_question(i + 1, arrays)
 
+def finger_test():
+    tree = AVLTree()
+    test_data = [44, 85, 167, 133]
+    for element in test_data:
+        tree.finger_insert(element, "")
+        print_tree(tree.root)
+    
+def print_tree(root, indent="", pointer="Root: "):
+	if root is not None:
+		print(indent + pointer + str(root.key))
+
+		if root.left or root.right:
+			if root.left:
+				print_tree(root.left, indent + "    ", "L--- ")
+			else:
+				print(indent + "    L--- None")
+
+			if root.right:
+				print_tree(root.right, indent + "    ", "R--- ")
+			else:
+				print(indent + "    R--- None")
+
 if __name__ == "__main__":
     # expected results in 3
     # for i in range(10):
@@ -93,3 +114,4 @@ if __name__ == "__main__":
     #         sum += logi + 1
     #     print(sum)
     test()
+    # finger_test()

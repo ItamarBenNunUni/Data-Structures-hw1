@@ -120,7 +120,11 @@ class AVLTree(object):
 			elif curr.key < key:
 				curr = curr.right
 			else:
-				curr = self.predecessor(curr)
+				pred = self.predecessor(curr)
+				if (pred.key < key):
+					curr = curr.left
+				else:
+					curr = pred
 				if curr.is_real_node():
 					edges += 1
 		return curr, edges
