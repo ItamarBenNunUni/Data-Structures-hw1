@@ -49,9 +49,9 @@ def build_AVL(arr, q):
     promotes = 0
     for elem in arr:
         if q == 3:
-            promotes += tree.insert(elem, "")[1]
+            promotes += tree.finger_insert(elem, "")[1]
         else:
-            promotes += tree.insert(elem, "")[2]
+            promotes += tree.finger_insert(elem, "")[2]
     return promotes
 
 def do_20(arr, x, q):
@@ -72,6 +72,18 @@ def do_question(q, arrays):
         orr, rev, rnd, adj = str(f1(arrays[i], q)), str(f2(arrays[i], q)), str(do_20(arrays[i], 3, q)), str(do_20(arrays[i], 4, q))
         print(orr + " " + rev + " " + rnd + " " + adj)
 
+
+def do_question_naive(q, arrays):
+    x = 10 if q != 2 else 5
+    what = ["Cost of balancing", "Number of switches", "Cost of searching"]
+    for i in range(x):
+        print("i = " + str(i + 1) + ", n = " + str(len(arrays[i])) + ":")
+        print(what[q - 1] + " in ordered array: " + str(f1(arrays[i], q)))
+        print(what[q - 1] + " in reversed array: " + str(f2(arrays[i], q)))
+        print(what[q - 1] + " in random array: " + str(do_20(arrays[i], 3, q)))
+        print(what[q - 1] + " in random switched adjacent array: " + str(do_20(arrays[i], 4, q)))
+
+
 def test():
     arrays = [[] for i in range(10)]
     for i in range(10):
@@ -80,7 +92,8 @@ def test():
             arrays[i].append(j)
     for i in range(3):
         print("Question " + str(i + 1))
-        do_question(i + 1, arrays)
+        # do_question(i + 1, arrays)
+        do_question_naive(i + 1, arrays)
 
 def finger_test():
     tree = AVLTree()
@@ -88,7 +101,7 @@ def finger_test():
     for element in test_data:
         tree.finger_insert(element, "")
         print_tree(tree.root)
-    
+
 def print_tree(root, indent="", pointer="Root: "):
 	if root is not None:
 		print(indent + pointer + str(root.key))

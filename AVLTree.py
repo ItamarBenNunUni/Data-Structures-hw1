@@ -112,8 +112,13 @@ class AVLTree(object):
 	and e is the number of edges on the path between the starting node and ending node+1.
 	"""
 	def finger_search_helper(self, key): # Time complexity: O(logn)
-		curr = self.max
 		edges = 1
+		if key >= self.max.key:
+			return self.max.right, edges
+		if key <= self.min.key:
+			return self.min.left, edges
+
+		curr = self.max
 		while curr.is_real_node():
 			if curr.key == key:
 				return curr, edges
@@ -121,8 +126,11 @@ class AVLTree(object):
 				curr = curr.right
 			else:
 				pred = self.predecessor(curr)
-				if (pred.key < key):
-					curr = curr.left
+				if pred.key < key:
+					if not pred.right.is_real_node:
+						curr = pred.right
+					else:
+						curr = curr.left
 				else:
 					curr = pred
 				if curr.is_real_node():
@@ -144,10 +152,12 @@ class AVLTree(object):
 		curr = node
 		while curr.parent is not None and curr.parent.left == curr:
 			curr = curr.parent
-		return node.left if curr.parent is None else curr.parent
+		if curr.parent is not None and curr.parent.right == curr: #first turn left
+			return curr.parent
+		return None
+
 
 	"""returns the successor of a given node
-
 	@type node: AVLNode
 	@param node: the node whose successor is to be found
 	@rtype: AVLNode
@@ -162,7 +172,9 @@ class AVLTree(object):
 		curr = node
 		while curr.parent is not None and curr.parent.right == curr:
 			curr = curr.parent
-		return node.right if curr.parent is None else curr.parent
+		if curr.parent is not None and curr.parent.left == curr: #first turn right
+			return curr.parent
+		return None
 
 	"""inserts a new node into the dictionary with corresponding key and value (starting at the root)
 
