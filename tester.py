@@ -1,3 +1,4 @@
+import math
 from AVLTree import AVLTree
 import random
 
@@ -29,7 +30,6 @@ def f3(arr, q):
         return build_AVL(new_arr, q)
     return count_flips(new_arr)
 
-
 def f4(arr, q):
     new_arr = []
     for elem in arr:
@@ -44,7 +44,6 @@ def f4(arr, q):
         return build_AVL(new_arr, q)
     return count_flips(new_arr)
 
-    
 def build_AVL(arr, q):
     tree = AVLTree()
     promotes = 0
@@ -66,7 +65,7 @@ def do_20(arr, x, q):
 
 def do_question(q, arrays):
     x = 10 if q != 2 else 5
-    what = ["Cost of balancing", "Number of switches", "Cost of searching"] 
+    what = ["Cost of balancing", "Number of switches", "Cost of searching"]
     for i in range(x):
         print("i = " + str(i + 1) + ", n = " + str(len(arrays[i])) + ":")
         print(what[q - 1] + " in ordered array: " + str(f1(arrays[i], q)))
@@ -85,4 +84,12 @@ def test():
         do_question(i + 1, arrays)
 
 if __name__ == "__main__":
+    # expected results in 3
+    # for i in range(10):
+    #     sum = 0
+    #     n = 111 * (2 ** (i + 1))
+    #     for j in range(n):
+    #         logi = 0 if j==0 else math.floor(math.log2(j))
+    #         sum += logi + 1
+    #     print(sum)
     test()

@@ -79,10 +79,12 @@ class AVLTree(object):
 				return curr, edges
 			elif curr.key < key:
 				curr = curr.right
-				edges += 1
+				if curr.is_real_node():
+					edges += 1
 			else:
 				curr = curr.left
-				edges += 1
+				if curr.is_real_node():
+					edges += 1
 		return curr, edges
 
 	"""searches for a node in the dictionary corresponding to the key, starting at the max
@@ -119,7 +121,8 @@ class AVLTree(object):
 				curr = curr.right
 			else:
 				curr = self.predecessor(curr)
-				edges += 1
+				if curr.is_real_node():
+					edges += 1
 		return curr, edges
 
 	"""returns the predecessor of a given node
@@ -212,8 +215,8 @@ class AVLTree(object):
 						curr = self.rotate_left(curr)
 					elif (child_left_edge == 1 and child_right_edge == 2): #case 3 - symmetrical option flipped from shown: double rotation to the right and then left
 						curr.right = self.rotate_right(curr.right)
-						curr = self.rotate_left(curr)			
-			curr = curr.parent 
+						curr = self.rotate_left(curr)
+			curr = curr.parent
 		return h
 
 	"""Performs a left rotation on the given node.
@@ -386,7 +389,7 @@ class AVLTree(object):
 		#update min/max
 		self.min = self.set_min()
 		self.max = self.set_max()
-					
+
 	"""joins self with item and another AVLTree
 
 	@type tree2: AVLTree 
@@ -450,7 +453,7 @@ class AVLTree(object):
 		while curr.left.is_real_node():
 			curr = curr.left
 		self.min = curr
-	
+
 	"""Sets the maximum node in the AVL tree."""
 	def set_max(self): # Time complexity: O(logn)
 		curr = self.root
@@ -596,5 +599,5 @@ class AVLTree(object):
 			self.min = where_to_insert
 		#promoting and balancing
 		h = self.rebalance(where_to_insert.parent)
-		#return 
+		#return
 		return where_to_insert, edges, h
