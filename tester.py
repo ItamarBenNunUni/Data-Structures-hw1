@@ -76,12 +76,12 @@ def do_question(q, arrays):
 def do_question_naive(q, arrays):
     x = 10 if q != 2 else 5
     what = ["Cost of balancing", "Number of switches", "Cost of searching"]
-    for i in range(x):
+    for i in range(6, x):
         print("i = " + str(i + 1) + ", n = " + str(len(arrays[i])) + ":")
-        print(what[q - 1] + " in ordered array: " + str(f1(arrays[i], q)))
-        print(what[q - 1] + " in reversed array: " + str(f2(arrays[i], q)))
+        # print(what[q - 1] + " in ordered array: " + str(f1(arrays[i], q)))
+        # print(what[q - 1] + " in reversed array: " + str(f2(arrays[i], q)))
         print(what[q - 1] + " in random array: " + str(do_20(arrays[i], 3, q)))
-        print(what[q - 1] + " in random switched adjacent array: " + str(do_20(arrays[i], 4, q)))
+        # print(what[q - 1] + " in random switched adjacent array: " + str(do_20(arrays[i], 4, q)))
 
 
 def test():

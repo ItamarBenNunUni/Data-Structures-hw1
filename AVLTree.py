@@ -113,11 +113,6 @@ class AVLTree(object):
 	"""
 	def finger_search_helper(self, key): # Time complexity: O(logn)
 		edges = 1
-		if key >= self.max.key:
-			return self.max.right, edges
-		if key <= self.min.key:
-			return self.min.left, edges
-
 		curr = self.max
 		while curr.is_real_node():
 			if curr.key == key:
