@@ -97,10 +97,11 @@ def test():
 
 def finger_test():
     tree = AVLTree()
-    test_data = [44, 85, 167, 133]
+    test_data = [i for i in range(20)]
+    random.shuffle(test_data)
     for element in test_data:
         tree.finger_insert(element, "")
-        print_tree(tree.root)
+    print_tree(tree.root)
 
 def print_tree(root, indent="", pointer="Root: "):
 	if root is not None:
