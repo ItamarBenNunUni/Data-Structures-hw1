@@ -221,6 +221,8 @@ class AVLTree(object):
 					elif (child_left_edge == 2 and child_right_edge == 1): #case 3 - symmetrical option as shown: double rotation to the left and then right (slide 27)
 						curr.left = self.rotate_left(curr.left)
 						curr = self.rotate_right(curr)
+					elif (child_left_edge == 1 and child_right_edge == 1): #special join case - symmetrical option as shown: single rotation to the right
+						curr = self.rotate_right(curr)
 				elif(right_edge == 0): #cases 2+3 - symmetrical option flipped from shown
 					child_left_edge = curr.right.height - curr.right.left.height
 					child_right_edge = curr.right.height - curr.right.right.height
@@ -228,6 +230,8 @@ class AVLTree(object):
 						curr = self.rotate_left(curr)
 					elif (child_left_edge == 1 and child_right_edge == 2): #case 3 - symmetrical option flipped from shown: double rotation to the right and then left
 						curr.right = self.rotate_right(curr.right)
+						curr = self.rotate_left(curr)
+					elif (child_left_edge == 1 and child_right_edge == 1): #special join case - symmetrical option flipped from shown: single rotation to the left
 						curr = self.rotate_left(curr)
 			curr = curr.parent
 		return h
