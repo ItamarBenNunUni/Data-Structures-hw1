@@ -120,8 +120,10 @@ class AVLTree(object):
 			elif curr.key < key:
 				curr = curr.right
 			else:
-				pred = self.predecessor(curr)
-				if pred.key < key:
+				pred = self.predecessor(curr) #predecessor is a real node or none in case of min max
+				if pred is None: # minimum
+					curr = curr.left
+				elif pred.key < key:
 					if not pred.right.is_real_node:
 						curr = pred.right
 					else:
