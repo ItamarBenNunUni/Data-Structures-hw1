@@ -47,12 +47,13 @@ def f4(arr, q):
 def build_AVL(arr, q):
     tree = AVLTree()
     promotes = 0
+    edges = 0
     for elem in arr:
         if q == 3:
-            promotes += tree.finger_insert(elem, "")[1]
-        else:
+            edges += tree.finger_insert(elem, "")[1]
+        else: #question 1
             promotes += tree.finger_insert(elem, "")[2]
-    return promotes
+    return edges if q==3 else promotes
 
 def do_20(arr, x, q):
     avg = 0
@@ -104,19 +105,19 @@ def finger_test():
     print_tree(tree.root)
 
 def print_tree(root, indent="", pointer="Root: "):
-	if root is not None:
-		print(indent + pointer + str(root.key))
+    if root is not None:
+        print(indent + pointer + str(root.key))
 
-		if root.left or root.right:
-			if root.left:
-				print_tree(root.left, indent + "    ", "L--- ")
-			else:
-				print(indent + "    L--- None")
+        if root.left or root.right:
+            if root.left:
+                print_tree(root.left, indent + "    ", "L--- ")
+            else:
+                print(indent + "    L--- None")
 
-			if root.right:
-				print_tree(root.right, indent + "    ", "R--- ")
-			else:
-				print(indent + "    R--- None")
+            if root.right:
+                print_tree(root.right, indent + "    ", "R--- ")
+            else:
+                print(indent + "    R--- None")
 
 if __name__ == "__main__":
     # expected results in 3
