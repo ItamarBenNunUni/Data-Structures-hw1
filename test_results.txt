@@ -1,128 +1,53 @@
 Question 1
 i = 1, n = 222:
-Cost of balancing in ordered array: 430
-Cost of balancing in reversed array: 430
-Cost of balancing in random array: 387.05
-Cost of balancing in random switched adjacent array: 426.8
+Cost of balancing in Ordered/Reversed/Random/Switch Adjacent:  430 430 382.25 426.05
 i = 2, n = 444:
-Cost of balancing in ordered array: 873
-Cost of balancing in reversed array: 873
-Cost of balancing in random array: 779.8
-Cost of balancing in random switched adjacent array: 862.85
+Cost of balancing in Ordered/Reversed/Random/Switch Adjacent:  873 873 774.85 866.2
 i = 3, n = 888:
-Cost of balancing in ordered array: 1760
-Cost of balancing in reversed array: 1760
-Cost of balancing in random array: 1577.1
-Cost of balancing in random switched adjacent array: 1737.25
+Cost of balancing in Ordered/Reversed/Random/Switch Adjacent:  1760 1760 1572.5 1736.55
 i = 4, n = 1776:
-Cost of balancing in ordered array: 3535
-Cost of balancing in reversed array: 3535
-Cost of balancing in random array: 3152.95
-Cost of balancing in random switched adjacent array: 3496.1
+Cost of balancing in Ordered/Reversed/Random/Switch Adjacent:  3535 3535 3146.75 3495.95
 i = 5, n = 3552:
-Cost of balancing in ordered array: 7086
-Cost of balancing in reversed array: 7086
-Cost of balancing in random array: 6328.4
-Cost of balancing in random switched adjacent array: 7010.45
+Cost of balancing in Ordered/Reversed/Random/Switch Adjacent:  7086 7086 6320.7 7004.15
 i = 6, n = 7104:
-Cost of balancing in ordered array: 14189
-Cost of balancing in reversed array: 14189
-Cost of balancing in random array: 12675.0
-Cost of balancing in random switched adjacent array: 14013.65
+Cost of balancing in Ordered/Reversed/Random/Switch Adjacent:  14189 14189 12666.15 14017.8
 i = 7, n = 14208:
-Cost of balancing in ordered array: 28396
-Cost of balancing in reversed array: 28396
-Cost of balancing in random array: 25360.9
-Cost of balancing in random switched adjacent array: 28063.9
+Cost of balancing in Ordered/Reversed/Random/Switch Adjacent:  28396 28396 25316.8 28069.25
 i = 8, n = 28416:
-Cost of balancing in ordered array: 56811
-Cost of balancing in reversed array: 56811
-Cost of balancing in random array: 50721.95
-Cost of balancing in random switched adjacent array: 56152.05
+Cost of balancing in Ordered/Reversed/Random/Switch Adjacent:  56811 56811 50720.6 56167.75
 i = 9, n = 56832:
-Cost of balancing in ordered array: 113642
-Cost of balancing in reversed array: 113642
-Cost of balancing in random array: 101420.0
-Cost of balancing in random switched adjacent array: 112349.7
+Cost of balancing in Ordered/Reversed/Random/Switch Adjacent:  113642 113642 101420.0 112299.05
 i = 10, n = 113664:
-Cost of balancing in ordered array: 227305
-Cost of balancing in reversed array: 227305
-Cost of balancing in random array: 202891.35
-Cost of balancing in random switched adjacent array: 224674.3
+Cost of balancing in Ordered/Reversed/Random/Switch Adjacent:  227305 227305 202853.75 224736.5
 Question 2
 i = 1, n = 222:
-Number of switches in ordered array: 0
-Number of switches in reversed array: 24531
-Number of switches in random array: 12329.0
-Number of switches in random switched adjacent array: 108.95
+Number of switches in Ordered/Reversed/Random/Switch Adjacent:  0 24531 12062.8 110.55
 i = 2, n = 444:
-Number of switches in ordered array: 0
-Number of switches in reversed array: 98346
-Number of switches in random array: 49142.5
-Number of switches in random switched adjacent array: 221.05
+Number of switches in Ordered/Reversed/Random/Switch Adjacent:  0 98346 48807.75 223.55
 i = 3, n = 888:
-Number of switches in ordered array: 0
-Number of switches in reversed array: 393828
-Number of switches in random array: 196043.55
-Number of switches in random switched adjacent array: 443.1
+Number of switches in Ordered/Reversed/Random/Switch Adjacent:  0 393828 198245.75 441.7
 i = 4, n = 1776:
-Number of switches in ordered array: 0
-Number of switches in reversed array: 1576200
-Number of switches in random array: 785733.7
-Number of switches in random switched adjacent array: 892.85
+Number of switches in Ordered/Reversed/Random/Switch Adjacent:  0 1576200 787306.45 889.1
 i = 5, n = 3552:
-Number of switches in ordered array: 0
-Number of switches in reversed array: 6306576
-Number of switches in random array: 3167565.45
-Number of switches in random switched adjacent array: 1781.1
+Number of switches in Ordered/Reversed/Random/Switch Adjacent:  0 6306576 3145471.55 1774.1
 Question 3
 i = 1, n = 222:
-Cost of searching in ordered array: 222
-Cost of searching in reversed array: 2695
-Cost of searching in random array: 2237.8
-Cost of searching in random switched adjacent array: 291.15
+Cost of searching in Ordered/Reversed/Random/Switch Adjacent:  222 2695 2215.15 287.65
 i = 2, n = 444:
-Cost of searching in ordered array: 444
-Cost of searching in reversed array: 6273
-Cost of searching in random array: 5261.8
-Cost of searching in random switched adjacent array: 581.4
+Cost of searching in Ordered/Reversed/Random/Switch Adjacent:  444 6273 5251.0 581.05
 i = 3, n = 888:
-Cost of searching in ordered array: 888
-Cost of searching in reversed array: 14317
-Cost of searching in random array: 12275.75
-Cost of searching in random switched adjacent array: 1168.25
+Cost of searching in Ordered/Reversed/Random/Switch Adjacent:  888 14317 12371.15 1159.15
 i = 4, n = 1776:
-Cost of searching in ordered array: 1776
-Cost of searching in reversed array: 32181
-Cost of searching in random array: 28249.7
-Cost of searching in random switched adjacent array: 2327.3
+Cost of searching in Ordered/Reversed/Random/Switch Adjacent:  1776 32181 28420.45 2330.3
 i = 5, n = 3552:
-Cost of searching in ordered array: 3552
-Cost of searching in reversed array: 71461
-Cost of searching in random array: 63596.6
-Cost of searching in random switched adjacent array: 4673.2
+Cost of searching in Ordered/Reversed/Random/Switch Adjacent:  3552 71461 64050.55 4657.6
 i = 6, n = 7104:
-Cost of searching in ordered array: 7104
-Cost of searching in reversed array: 157125
-Cost of searching in random array: 142571.1
-Cost of searching in random switched adjacent array: 9320.15
+Cost of searching in Ordered/Reversed/Random/Switch Adjacent:  7104 157125 142773.7 9313.95
 i = 7, n = 14208:
-Cost of searching in ordered array: 14208
-Cost of searching in reversed array: 342661
-Cost of searching in random array: 308942.65
-Cost of searching in random switched adjacent array: 18658.8
+Cost of searching in Ordered/Reversed/Random/Switch Adjacent:  14208 342661 310491.3 18640.2
 i = 8, n = 28416:
-Cost of searching in ordered array: 28416
-Cost of searching in reversed array: 742149
-Cost of searching in random array: 678224.05
-Cost of searching in random switched adjacent array: 37268.2
+Cost of searching in Ordered/Reversed/Random/Switch Adjacent:  28416 742149 682672.75 37316.45
 i = 9, n = 56832:
-Cost of searching in ordered array: 56832
-Cost of searching in reversed array: 1597957
-Cost of searching in random array: 1469617.7
-Cost of searching in random switched adjacent array: 74508.45
+Cost of searching in Ordered/Reversed/Random/Switch Adjacent:  56832 1597957 1475418.7 74597.15
 i = 10, n = 113664:
-Cost of searching in ordered array: 113664
-Cost of searching in reversed array: 3423237
-Cost of searching in random array: 3182827.7
-Cost of searching in random switched adjacent array: 149161.8
+Cost of searching in Ordered/Reversed/Random/Switch Adjacent:  113664 3423237 3167710.1 149222.45

@@ -94,7 +94,7 @@ def test():
     for i in range(3):
         print("Question " + str(i + 1))
         # do_question(i + 1, arrays)
-        do_question_naive(i + 1, arrays)
+        do_question(i + 1, arrays)
 
 def finger_test():
     tree = AVLTree()
@@ -130,3 +130,15 @@ if __name__ == "__main__":
     #     print(sum)
     test()
     # finger_test()
+    # tree = AVLTree()
+    # tree.insert(8, "8")
+    # tree.insert(4, "4")
+    # tree.insert(3, "3")
+    # tree.insert(6, "6")
+    # tree.insert(15, "15")
+    # tree.insert(11, "11")
+    # tree.insert(54, "54")
+    # print_tree(tree.root)
+    # (r, l) = tree.split(tree.root.right.left)
+    # print_tree(r.root)
+    # print_tree(l.root)
