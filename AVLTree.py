@@ -125,26 +125,6 @@ class AVLTree(object):
 		x, e = curr.search_helper(key)
 		return x, e + edges
 
-	"""returns the predecessor of a given node
-	@type node: AVLNode
-	@param node: the node whose predecessor is to be found
-	@rtype: AVLNode
-	@returns: the predecessor of the given node
-	"""
-	def predecessor(self, node): # Time complexity: O(logn)
-		if node.left.is_real_node():
-			curr = node.left
-			while curr.right.is_real_node():
-				curr = curr.right
-			return curr
-		curr = node
-		while curr.parent is not None and curr.parent.left == curr:
-			curr = curr.parent
-		if curr.parent is not None and curr.parent.right == curr: #first turn left
-			return curr.parent
-		return None
-
-
 	"""returns the successor of a given node
 	@type node: AVLNode
 	@param node: the node whose successor is to be found
